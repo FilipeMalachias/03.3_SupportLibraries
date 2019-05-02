@@ -1,10 +1,12 @@
 package com.filipe.malachias.hellocompat;
 
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -41,13 +43,17 @@ public class MainActivity extends AppCompatActivity {
         String colorName = mColorArray[random.nextInt(20)];
 
         // Get the color identifier that matches the color name.
-        int colorResourceName = getResources().getIdentifier(colorName,
-                "color", getApplicationContext().getPackageName());
+        if (Build.VERSION.SDK_INT > 23) {
+            int colorResourceName = getResources().getIdentifier(colorName,
+                    "color", getApplicationContext().getPackageName());
 
-        // Get the color ID from the resources.
-        int colorRes = ContextCompat.getColor(this, colorResourceName);
+            // Get the color ID from the resources.
+            int colorRes = ContextCompat.getColor(this, colorResourceName);
 
-        // Set the text color.
-        mHelloTextView.setTextColor(colorRes);
+            // Set the text color.
+            mHelloTextView.setTextColor(colorRes);
+        } else {
+            Toast.makeText(this, "Older Android does not support this feature.", Toast.LENGTH_LONG).show();
+        }
     }
 }
